@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="registration-container p-4 bg-white shadow rounded" style="text-align: center;">
+      <h2><i class="fas fa-id-card-alt"></i> Registration Form</h2>
+      <form id="registration-form">
+        <input type="text" class="form-control" id="new-username" placeholder="Username" required>
+        <input type="text" class="form-control" id="age" placeholder="Age" required>
+        <input type="email" class="form-control" id="email" placeholder="Email" required>
+        <small id="email-validation" class="form-text text-danger"></small><!-- Email validation message -->
+        <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
+        <small id="phone-validation" class="form-text text-danger"></small><!-- Phone validation message -->
+        <input type="text" class="form-control" id="location" placeholder="Location" required>
+        <input type="text" class="form-control" id="bio" placeholder="Bio" required>
+        <input type="password" class="form-control" id="new-password" placeholder="Password" required>
+        <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" required>
+        <p id="password-match-message" class="mt-2"></p>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+      </form>
+      <p class="mt-3">Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    const passwordField = document.getElementById("new-password");
+    const confirmPasswordField = document.getElementById("confirm-password");
+    const passwordMatchMessage = document.getElementById("password-match-message");
+    const registrationForm = document.getElementById("registration-form");
+
+    const emailInput = document.getElementById("email");
+    const emailValidation = document.getElementById("email-validation");
+    const phoneInput = document.getElementById("phone");
+    const phoneValidation = document.getElementById("phone-validation");
+
+    registrationForm.addEventListener("submit", function (event) {
+      if (passwordField.value !== confirmPasswordField.value) {
+        event.preventDefault(); 
+        passwordMatchMessage.textContent = "Passwords do not match!";
+      } else {
+        const newUsername = document.getElementById("new-username").value;
+        const newPassword = document.getElementById("new-password").value;
+        const age = document.getElementById("age").value;
+        const email=document.getElementById("email").value;
+        const location = document.getElementById("location").value;
+        const bio = document.getElementById("bio").value;
+        const phone = document.getElementById("phone").value;
+
+        const profileData = {
+          username: newUsername,
+          age: age,
+          email:email,
+          location: location,
+          bio: bio,
+          phone:phone,
+        };
+
+        // Validate email format
+        if (!validateEmail(emailInput.value)) {
+            event.preventDefault();
+            emailValidation.textContent = "Invalid email format";
+        } else {
+            emailValidation.textContent = "";
+        }
+
+        // Validate phone number format
+        if (!validatePhoneNumber(phoneInput.value)) {
+            event.preventDefault();
+            phoneValidation.textContent = "Invalid phone number format";
+        } else {
+            phoneValidation.textContent = "";
+        }
+
+        // Store profileData in localStorage
+        localStorage.setItem("profileData", JSON.stringify(profileData));
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        users.push({ username: newUsername, password: newPassword });
+        localStorage.setItem("users", JSON.stringify(users));
+        
+        window.location.href = "login.html";
+        alert("Registration successful! You can now login with your new account");
+        
+      }
+    });
+
+    // Email validation function
+    function validateEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    }
+
+    // Phone number validation function
+    function validatePhoneNumber(phone) {
+        const phonePattern = /^\d{10}$/;
+        return phonePattern.test(phone);
+    }
+    
+    confirmPasswordField.addEventListener("input", function () {
+      if (passwordField.value === confirmPasswordField.value) {
+        passwordMatchMessage.textContent = "Passwords match!";
+        passwordMatchMessage.style.color = "green";
+      } else {
+        passwordMatchMessage.textContent = "Passwords do not match!";
+        passwordMatchMessage.style.color = "red";
+      }
+    });
+
+  </script>
+</body>
+
+</html>

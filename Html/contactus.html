@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #f0f4f8;
+            color: #00030a;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #000008;
+        }
+
+        .container {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .profile-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">Portfolio</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i> 
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i  class="fas fa-home"></i>Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="aboutus.html"><i class="fas fa-info-circle"></i>About</a>
+                      </li>
+                      <!-- <li class="nav-item">
+                        <a class="nav-link" href="#services"><i class="fas fa-cogs">Services</a>
+                      </li> -->
+                      <li class="nav-item">
+                        <a class="nav-link" href="contactus.html"><i class="fas fa-envelope"></i>Contact</a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="#" data-toggle="modal" data-target="#profileModal">
+                            <img src="profile.jpeg" alt="Profile Picture" width="30" height="30"
+                                class="d-inline-block align-top rounded-circle" id="profileImage">
+                        </a>
+                        <div class="modal fade" id="profileModal" tabindex="-1" role="dialog"
+                            aria-labelledby="profileModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="profileModalLabel">Profile Details</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="profile.jpeg" alt="Profile Picture" width="130" height="130"
+                                            class="rounded-circle">
+                                        <h2 id="username"></h2>
+                                        <p id="age"></p>
+                                        <p id="email"></p>
+                                        <p id="phone"></p>
+                                        <p id="location"></p>
+                                        <p id="bio"></p>
+                                        <button class="btn btn-danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Logout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Contact Us</h2>
+        <div class="card">
+            <div class="card-header">
+                Send a Message
+            </div>
+            <div class="card-body">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email-id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" class="form-control" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea class="form-control" id="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+          Contact Messages
+        </div>
+        <div class="card-body">
+          <ul id="message-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2023 PortFolio hts Reserved.</p>
+    </footer>
+
+    <script>
+        const loggedInUser = localStorage.getItem("loggedInUser");
+        if (loggedInUser) {
+            const profileData = JSON.parse(localStorage.getItem("profileData"));
+
+            // Get the username from the session (replace with your session handling logic)
+            const username = sessionStorage.getItem("username");
+
+            if (username) {
+                document.getElementById("username").textContent = username;
+            }
+
+            // Logout functionality
+            document.getElementById("logoutBtn").addEventListener("click", function () {
+                // Clear session and redirect to login page
+                sessionStorage.removeItem("username");
+                window.location.href = "register.html";
+            });
+
+            if (profileData) {
+                document.getElementById("username").textContent = loggedInUser;
+                document.getElementById("age").textContent = profileData.age;
+                document.getElementById("email").textContent = profileData.email;
+                document.getElementById("location").textContent = profileData.location;
+                document.getElementById("bio").textContent = profileData.bio;
+                document.getElementById("phone").textContent = profileData.phone;
+            } else {
+                alert("Profile data not found.");
+                window.location.href = "login.html"; // Redirect to login page
+            }
+
+        }
+
+        const profileData = JSON.parse(localStorage.getItem("profileData"));
+
+    if (!loggedInUser) {
+      alert("You are not logged in. Please log in.");
+      window.location.href = "login.html"; // Redirect to login page
+    }
+
+    if (profileData) {
+      document.getElementById("name").value = profileData.username;
+      document.getElementById("email-id").value = profileData.email;
+    }
+
+    const contactForm = document.getElementById("contact-form");
+    const messageList = document.getElementById("message-list");
+
+    contactForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email-id").value;
+      const message = document.getElementById("message").value;
+      const phone = document.getElementById("phone").value;
+
+      const currentDateTime = new Date().toLocaleString();
+
+      const contactMessage = {
+        name,
+        email,
+        phone,
+        message,
+        dateTime: currentDateTime
+      };
+
+      let contactMessages = JSON.parse(localStorage.getItem("contactMessages")) || [];
+      contactMessages.push(contactMessage);
+      localStorage.setItem("contactMessages", JSON.stringify(contactMessages));
+
+      // Display the message in the list
+      const messageItem = document.createElement("li");
+      messageItem.textContent = `${contactMessage.dateTime} - ${contactMessage.name}: ${contactMessage.message}`;
+      messageList.appendChild(messageItem);
+
+      alert("Message sent successfully!");
+      window.location.href = "contactus.html";
+    });
+
+    // Load existing messages from local storage
+    const existingMessages = JSON.parse(localStorage.getItem("contactMessages")) || [];
+    existingMessages.forEach(message => {
+      const messageItem = document.createElement("li");
+      messageItem.textContent = `${message.dateTime} - ${message.name}: ${message.message}`;
+      messageList.appendChild(messageItem);
+    });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
